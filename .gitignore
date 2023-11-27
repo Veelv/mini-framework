@@ -1,5 +1,7 @@
 "vendor/"
 vendor/
+"tokens/"
 tokens/
+"php_erros.log/"
 php_erros.log/
-.env/
+".env/"
