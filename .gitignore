@@ -1,0 +1,5 @@
+"vendor/"
+vendor/
+tokens/
+php_erros.log/
+.env/

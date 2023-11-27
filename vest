@@ -1,0 +1,36 @@
+#!/usr/bin/env php
+<?php
+$args = $_SERVER['argv'];
+array_shift($args);
+
+switch ($args[0]) {
+    case 'start':
+        $port = 8081;
+        $url = 'http://localhost:' . $port;
+
+        // Iniciar o servidor
+        $serverCommand = "php -S 0.0.0.0:$port";
+        $serverProcess = popen($serverCommand, 'r');
+
+        // Aguardar um curto período de tempo para o servidor iniciar
+        sleep(1);
+
+        // Abrir o navegador com a rota
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            pclose(popen("start $url", 'r'));
+        } elseif (PHP_OS === 'Darwin') {
+            pclose(popen("open $url", 'r'));
+        } else {
+            pclose(popen("xdg-open $url", 'r'));
+        }
+
+        // Mantém o script em execução indefinidamente
+        while (true) {
+            sleep(1);
+        }
+
+        break;
+}
+
+
+// https://receitaws.com.br/v1/cnpj/01616929000102
