@@ -4,6 +4,7 @@ namespace Config\Router;
 
 use Config\Router\RouteHandler;
 use Config\Router\RouterGroup;
+use Config\Validator;
 
 class Route
 {
@@ -11,6 +12,7 @@ class Route
     private $namespace;
     private $routeGroups;
     private $middlewares;
+    private $validations;
 
     public function __construct()
     {
@@ -18,9 +20,10 @@ class Route
         $this->namespace = 'App\Controllers\\';
         $this->routeGroups = [];
         $this->middlewares = [];
+        $this->validations = [];
     }
 
-    public function method($method, $path, $action, $middlewares = [])
+    public function method($method, $path, $action, $middlewares = [], $validations = [])
     {
         $pattern = '#^' . str_replace('/', '\/', $path) . '$#';
         $pattern = preg_replace('/{(\w+)}/', '(?<$1>[^/]+)', $pattern);
@@ -39,6 +42,7 @@ class Route
             'action' => $action,
             'group' => end($this->routeGroups),
             'middlewares' => array_merge($this->middlewares, (array) $middlewares),
+            'validations' => array_merge($this->validations, (array) $validations)
         ];
     }
 
@@ -47,9 +51,9 @@ class Route
         $this->method('GET', $path, $action, $middlewares);
     }
 
-    public function post($path, $action, $middlewares = [])
+    public function post($path, $action, $middlewares = [], $validate = [])
     {
-        $this->method('POST', $path, $action, $middlewares);
+        $this->method('POST', $path, $action, $middlewares, $validate);
     }
 
     public function put($path, $action, $middlewares = [])
