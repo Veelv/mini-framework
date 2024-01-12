@@ -14,9 +14,9 @@ class Validator
 
   public function __construct()
   {
-    $this->db = new MysqlDatabase();
-    $this->mongo = new MongoDatabase();
-    $this->mongo->connect();
+    // $this->db = new MysqlDatabase();
+    // $this->mongo = new MongoDatabase();
+    // $this->mongo->connect();
   }
 
   public function itIsNotArrayOrEmpty($value, $message, $field)

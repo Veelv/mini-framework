@@ -4,8 +4,11 @@ namespace Config\Router;
 
 class MiddlewareHandler
 {
-    public function applyMiddlewares($middlewares, $action, $params)
+    public function applyMiddlewares($middlewares, $action, $params, $validations)
     {
+        $validatorHandler = new ValidatorHandler();
+        $response = new Response();
+
         $next = function () use ($action, $params) {
             $this->callAction($action, $params);
         };
@@ -18,6 +21,13 @@ class MiddlewareHandler
                 $middlewareObj = new $middleware();
                 $middlewareObj->handle($params, $nextMiddleware);
             };
+        }
+
+        $errors = $validatorHandler->applyValidations($validations);
+
+        if (count($errors) > 0 && count($errors['fields'])) {
+            $response->badRequest($errors);
+            return;
         }
 
         $next();

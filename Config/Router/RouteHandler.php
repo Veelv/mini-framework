@@ -4,12 +4,14 @@ namespace Config\Router;
 
 use Config\Router\MiddlewareHandler;
 use Config\Router\RouteMatcher;
+use Config\Router\ValidatorHandler;
 
 class RouteHandler
 {
     private $routes;
     private $routeMatcher;
     private $middlewareHandler;
+    private $validatorHandler;
 
     public function __construct($routes)
     {
@@ -30,8 +32,9 @@ class RouteHandler
                 $action = $matchedRoute['action'];
                 $params = $this->routeMatcher->extractParams($matchedRoute, $path);
                 $middlewares = $matchedRoute['middlewares'];
+                $validations = $matchedRoute['validations'];
 
-                $this->middlewareHandler->applyMiddlewares($middlewares, $action, $params);
+                $this->middlewareHandler->applyMiddlewares($middlewares, $action, $params, $validations);
                 return;
             }
 
